@@ -6,7 +6,7 @@
         <key>texturePackerVersion</key>
         <string>3.7.1</string>
         <key>fileName</key>
-        <string>/Users/frondeus/Dysk Google/Code/Ludum Dare/LD32/atlases/characters.tps</string>
+        <string>/Users/frondeus/Dysk Google/Code/Ludum Dare/LD32/atlases/ui.tps</string>
         <key>autoSDSettings</key>
         <array>
             <struct type="AutoSDSettings">
@@ -145,7 +145,7 @@
             <key>data</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename>characters.json</filename>
+                <filename>map.json</filename>
             </struct>
         </map>
         <key>multiPack</key>
@@ -188,12 +188,12 @@
         </struct>
         <key>fileList</key>
         <array>
-            <filename>characters_0.png</filename>
-            <filename>characters_1.png</filename>
-            <filename>characters_2.png</filename>
-            <filename>characters_3.png</filename>
-            <filename>characters_4.png</filename>
-            <filename>characters_5.png</filename>
+            <filename>map_0.png</filename>
+            <filename>map_1.png</filename>
+            <filename>map_2.png</filename>
+            <filename>map_3.png</filename>
+            <filename>map_4.png</filename>
+            <filename>map_5.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
