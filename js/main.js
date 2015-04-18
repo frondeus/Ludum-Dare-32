@@ -8,6 +8,10 @@ Engine = {
 
 	enemies: [],
 
+	map: [],
+	mapWidth: 8,
+	mapHeight: 8,
+
 };
 var app = playground({
 	scale: 2,
@@ -18,27 +22,38 @@ var app = playground({
 	},
 
 	ready: function(){
-		this.go = [];
+		for(var x = 0; x < Engine.mapWidth; x++){
+			Engine.map[x] = [];	
+			for(var y = 0; y < Engine.mapHeight; y++){
+				Engine.map[x][y] = [];
+				this.addGo(Engine.map[x][y]);
+			}
+		}
+		// debugger;
+		this.player = this.addGo(Engine.map[4][4]).addComponent("player", new Engine.Player());
 
-		for(var x = 0; x < 8; x++)
-			for(var y = 0; y < 8; y++)
-				this.addGO({x: x, y: y});
-
-		this.player = this.addGO({x: 4, y: 4}).addComponent("player", new Engine.Player());
-
-		var enemy = this.addGO({x: 6, y: 6}).addComponent("enemy", new Engine.Enemy());
-		Engine.enemies[Engine.enemies.length] = enemy;
+		this.addGo(Engine.map[6][6],Engine.enemies).addComponent("enemy", new Engine.Enemy());
 	},
 
-	addGO: function(args){
-		this.go[this.go.length] = new Engine.GO(args);
-		return this.go[this.go.length-1];
+	addGo: function(){
+		var go = new Engine.GO();
+		for(var i = 0; i < arguments.length; i++)
+			arguments[i][arguments[i].length] = go;
+		return go;
 	},
 
 	render: function(dt){
 		this.layer.clear("#224");
-		for(var i in this.go)
-			this.go[i].render(dt);
+		for(var x = 0; x < Engine.mapWidth; x++)
+			for(var y = 0; y < Engine.mapHeight; y++)
+			
+				for(var i in Engine.map[x][y]){
+					var go = Engine.map[x][y][i];
+					app.layer
+						.drawAtlasFrame(go.tileset,go.frame * 3 + go.rFFactor, 
+							Engine.mapOffset.x + x * (Engine.tileSize + Engine.tileMargin), 
+							Engine.mapOffset.y + y * (Engine.tileSize + Engine.tileMargin));
+				}
 	},
 
 	turn: function(){

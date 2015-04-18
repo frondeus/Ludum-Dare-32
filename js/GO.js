@@ -16,12 +16,4 @@ Engine.GO.prototype = {
 		if(c.init) c.init();
 		return this;
 	},
-
-	render: function(dt){
-		app.layer
-			.drawAtlasFrame(this.tileset,this.frame * 3 + this.rFFactor, 
-				Engine.mapOffset.x + this.x * (Engine.tileSize + Engine.tileMargin), 
-				Engine.mapOffset.y + this.y * (Engine.tileSize + Engine.tileMargin)
-		);
-	},
 };
