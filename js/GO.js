@@ -5,6 +5,7 @@ Engine.GO = function(args){
 		tileset: app.atlases.map,
 		frame: 0,
 		rFFactor: Utils.randomZ(0,2),
+		zIndex: 0
 	},args);
 };
 
@@ -15,5 +16,18 @@ Engine.GO.prototype = {
 		c.go = this;
 		if(c.init) c.init();
 		return this;
+	},
+
+	removeComponent: function(name){
+		this[name] = null;
+		return this;
+	},
+
+	render: function(dt){
+		app.layer
+			.drawAtlasFrame(this.tileset,this.frame * 3 + this.rFFactor, 
+				Engine.mapOffset.x + this.x * (Engine.tileSize + Engine.tileMargin), 
+				Engine.mapOffset.y + this.y * (Engine.tileSize + Engine.tileMargin)
+		);
 	},
 };

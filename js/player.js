@@ -5,11 +5,17 @@ Engine.Player.prototype = {
 	init: function(){
 		this.go.tileset = app.atlases.characters;
 		this.go.lifes = 1;
+		this.go.zIndex = 2;
 	},
 
 	canGo: function(x, y){
-		if(Engine.isGo(Engine.enemies,x,y)) {
-			app.setState(Engine.Fight);
+		var enemy = Engine.isGo(Engine.enemies,x,y);
+		if(enemy) {
+			enemy.removeComponent("enemy")
+				.addComponent("ally", new Engine.Ally());
+
+			Engine.removeGo(enemy,Engine.enemies);
+			Engine.addGo(enemy,Engine.allies);
 		}
 		if(Engine.isGo(Engine.block,x,y)) return false;
 		if(Engine.isGo(Engine.ground,x,y)) return true;

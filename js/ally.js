@@ -1,26 +1,22 @@
-Engine.Enemy = function(){
+Engine.Ally = function(){
 
 };
 
-Engine.Enemy.prototype = {
+Engine.Ally.prototype = {
 	init: function(){
 		this.go.tileset = app.atlases.characters;
-		this.go.frame = 1;
+		this.go.frame = 2;
 		this.go.zIndex = 1;
 	},
 
 	canGo: function(x, y){
-		var player= Engine.isGo(Engine.players,x,y);
-		if(player) {
-			player.lifes--;
-		}
-		var ally = Engine.isGo(Engine.allies, x, y);
-		if(ally){
-			ally.removeComponent("ally")
+		if(Engine.isGo(Engine.enemy,x,y))
+		{
+			this.go.removeComponent("ally")
 				.addComponent("enemy", new Engine.Enemy());
 
-			Engine.removeGo(ally,Engine.allies);
-			Engine.addGo(ally,Engine.enemies);
+			Engine.removeGo(this.go,Engine.allies);
+			Engine.addGo(this.go,Engine.enemies);
 		}
 		if(Engine.isGo(Engine.block,x,y)) return false;
 		if(Engine.isGo(Engine.ground,x,y)) return true;
