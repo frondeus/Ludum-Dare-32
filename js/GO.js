@@ -5,8 +5,11 @@ Engine.GO = function(args){
 		tileset: app.atlases.map,
 		frame: 0,
 		rFFactor: Utils.randomZ(0,2),
-		zIndex: 0
+		zIndex: 0,
+		scale: 0,
 	},args);
+
+	app.tween(this).wait(Utils.randomR(0.0,1.5)).to({scale: Engine.camera.scale}, 0.1 , "01").play();
 };
 
 Engine.GO.prototype = {
@@ -24,10 +27,15 @@ Engine.GO.prototype = {
 	},
 
 	render: function(dt){
-		app.layer
-			.drawAtlasFrame(this.tileset,this.frame * 3 + this.rFFactor, 
-				Engine.mapOffset.x + this.x * (Engine.tileSize + Engine.tileMargin), 
-				Engine.mapOffset.y + this.y * (Engine.tileSize + Engine.tileMargin)
-		);
+		app.layer.save()
+		
+		.translate(Engine.camera.scale * this.x * (Engine.tileSize + Engine.tileMargin),
+			Engine.camera.scale * this.y * (Engine.tileSize + Engine.tileMargin))
+		
+		.scale(this.scale,this.scale)
+		.align(0.5)
+		.drawAtlasFrame(this.tileset,this.frame * 3 + this.rFFactor, 0, 0)
+
+		app.layer.restore();
 	},
 };

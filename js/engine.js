@@ -1,17 +1,22 @@
 Engine = {
 	tileSize: 32,
-	tileMargin: 2,
-	mapOffset: {
-		x: 8,
-		y: 8,
+	tileMargin: 0,
+	camera: {
+		x: 100,
+		y: 100,
+		scale: 0.5,
 	},
 
-	players: [],
-	enemies: [],
-	go: [],
-	ground: [],
-	block: [],
-	allies: [],
+	// go: [],
+
+	init: function(){
+		this.players = [];
+		this.enemies = [];
+		this.go = [];
+		this.ground = [];
+		this.block = [];
+		this.allies = [];
+	},
 
 	addGo: function(){
 		var go = arguments[0];
@@ -40,6 +45,17 @@ Engine = {
 			this.enemies[i].enemy.turn();
 		for(var i in this.allies)
 			this.allies[i].ally.turn();
+
+		if(this.enemies.length <= 0){
+			this.generateMap();
+			console.log("You win!");
+		}
+
+		if(this.player.lifes <= 0){
+			this.generateMap();
+			console.log("Game Over!");
+			// app.setState(null);
+		}
 	},
 
 	sort: function() {
@@ -50,4 +66,7 @@ Engine = {
 			return (a.zIndex | 0) - (b.zIndex | 0);
 		});
 	},
+
+	
+
 };

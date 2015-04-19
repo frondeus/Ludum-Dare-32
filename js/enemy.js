@@ -34,6 +34,7 @@ Engine.Enemy.prototype = {
 		for(var i = 0; i < 4; i++)
 		if(this.canGo(nextX,nextY)){
 			app.tween(this.go)
+				.wait(Utils.randomR(0,0.2))
 				.to({x: nextX, y: nextY}, 0.1, "01");
 				break;
 		}
