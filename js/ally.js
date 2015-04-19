@@ -6,7 +6,7 @@ Engine.Ally.prototype = {
 	init: function(){
 		this.go.tileset = app.atlases.characters;
 		this.go.frame = 2;
-		this.go.zIndex = 1;
+		this.go.zIndex = 2;
 	},
 
 	canGo: function(x, y){

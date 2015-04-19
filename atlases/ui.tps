@@ -102,7 +102,7 @@
         <key>algorithmSettings</key>
         <struct type="AlgorithmSettings">
             <key>algorithm</key>
-            <enum type="AlgorithmSettings::AlgorithmId">MaxRects</enum>
+            <enum type="AlgorithmSettings::AlgorithmId">Basic</enum>
             <key>freeSizeMode</key>
             <enum type="AlgorithmSettings::AlgorithmFreeSizeMode">Best</enum>
             <key>sizeConstraints</key>
@@ -145,7 +145,7 @@
             <key>data</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename>map.json</filename>
+                <filename>ui.json</filename>
             </struct>
         </map>
         <key>multiPack</key>
@@ -188,12 +188,12 @@
         </struct>
         <key>fileList</key>
         <array>
-            <filename>map_0.png</filename>
-            <filename>map_1.png</filename>
-            <filename>map_2.png</filename>
-            <filename>map_3.png</filename>
-            <filename>map_4.png</filename>
-            <filename>map_5.png</filename>
+            <filename>ui_0.png</filename>
+            <filename>ui_1.png</filename>
+            <filename>ui_2.png</filename>
+            <filename>ui_3.png</filename>
+            <filename>ui_4.png</filename>
+            <filename>ui_5.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

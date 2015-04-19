@@ -4,8 +4,8 @@ Engine.Player = function(){
 Engine.Player.prototype = {
 	init: function(){
 		this.go.tileset = app.atlases.characters;
-		this.go.lifes = 1;
-		this.go.zIndex = 2;
+		this.go.lifes = 5;
+		this.go.zIndex = 3;
 	},
 
 	canGo: function(x, y){

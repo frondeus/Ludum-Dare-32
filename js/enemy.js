@@ -6,13 +6,14 @@ Engine.Enemy.prototype = {
 	init: function(){
 		this.go.tileset = app.atlases.characters;
 		this.go.frame = 1;
-		this.go.zIndex = 1;
+		this.go.zIndex = 2;
 	},
 
 	canGo: function(x, y){
 		var player= Engine.isGo(Engine.players,x,y);
 		if(player) {
 			player.lifes--;
+			return true;
 		}
 		var ally = Engine.isGo(Engine.allies, x, y);
 		if(ally){
