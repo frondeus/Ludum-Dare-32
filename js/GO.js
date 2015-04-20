@@ -34,7 +34,11 @@ Engine.GO.prototype = {
 		
 		.scale(this.scale,this.scale)
 		.align(0.5)
-		.drawAtlasFrame(this.tileset,this.frame * 3 + this.rFFactor, 0, 0)
+		.drawAtlasFrame(this.tileset,this.frame * 3 + this.rFFactor, 0, 0);
+
+		// if(this.id)
+			// app.layer.font("16px Arial").fillStyle("#f00").fillText("" + this.id,-8,0);
+		
 
 		app.layer.restore();
 	},

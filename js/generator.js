@@ -40,36 +40,45 @@ Engine.generator = {
 	makeDoors: function(){
 		var _x, _y;
 		for(var i in this.edges){
-			if(!this.edges[i]) continue;
+			var edge = this.edges[i];
+			if(!edge) continue;
 			var first = null;
 			for(var d in this.dirs){
 				_x = this.dirs[d][0];
 				_y = this.dirs[d][1];
-				var tile = Engine.isGo(Engine.ground,this.edges[i].x + _x, this.edges[i].y + _y);
+				var tile = Engine.isGo(Engine.ground,edge.x + _x, edge.y + _y);
 				if(!tile || !tile.id) continue;
-				if(first && first.id != tile.id){
+				if(!first)
+					first = tile;
+				else if(first && first.id != tile.id){
 					
 					var zone = this.zones[tile.id];
-					// console.log(zone);
-					// debugger;
-					for(var t in zone)
+					for(var t in zone){
 						zone[t].id = first.id;
+						this.zones[first.id][this.zones[first.id].length] = zone[t];
+					}
+					this.zones[first.id][this.zones[first.id].length] = edge;
+					// console.
+					
+			
+					edge.id = first.id;
+					edge.frame = 0;
+					// edge.tileset = app.atlases.ui;
 
-					this.edges[i].frame = 0;
-					// this.edges[i].tileset = app.atlases.;
-
-					Engine.addGo(this.edges[i], Engine.ground);
-					Engine.removeGo(this.edges[i], this.edges, Engine.block);
+					Engine.addGo(edge, Engine.ground);
+					Engine.removeGo(edge, this.edges, Engine.block);
 			 		
 				} 
-				else first = tile;
 			}
 		}
+
+		for(var i in this.zones)
+				console.log(this.zones[i][0].id);
 	},
 
 	makeEdge: function(x, y,id){
 		if(!Engine.isGo(Engine.go, x, y))
-			Engine.addGo(new Engine.GO({x: x, y: y, frame: 1,id: id /*tileset: app.atlases.ui*/}), Engine.go, Engine.block, this.edges);
+			Engine.addGo(new Engine.GO({x: x, y: y, frame: 1,id: id}), Engine.go, Engine.block, this.edges);
 	},
 
 	getDir: function(){
@@ -162,16 +171,16 @@ Engine.generator = {
 
 				for(x = X-1; x< W+1; x++){
 					if(!Engine.isGo(this.edges,x,Y-1))
-						this.makeEdge(x,Y-1);
+						this.makeEdge(x,Y-1, id);
 					if(!Engine.isGo(this.edges,x,H))
-						this.makeEdge(x,H);
+						this.makeEdge(x,H, id);
 				}
 
 				for(y = Y-1; y < H+1; y++){
 					if(!Engine.isGo(this.edges,X-1,y))
-						this.makeEdge(X-1,y);
+						this.makeEdge(X-1,y , id);
 					if(!Engine.isGo(this.edges,W,y))
-						this.makeEdge(W,y);
+						this.makeEdge(W,y , id);
 						
 				}
 
