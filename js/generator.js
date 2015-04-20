@@ -49,8 +49,19 @@ Engine.generator = {
 					for(var y = Y; y < H; y++)
 						Engine.addGo(new Engine.GO({x: x, y: y, id: id}), Engine.go, Engine.ground, this.zones[id]);
 
-				for(x = X-1; x< W+1; x++)
-					Engine.addGo(new Engine.GO({x: x, y: y, frame: 1, zIndex: 2}), Engine.go, Engine.block, this.edges);
+				for(x = X-1; x< W+1; x++){
+					if(!Engine.isGo(this.edges,x,Y-1))
+						Engine.addGo(new Engine.GO({x: x, y: Y-1, frame: 1, zIndex: 2}), Engine.go, Engine.block, this.edges);
+					if(!Engine.isGo(this.edges,x,H))
+						Engine.addGo(new Engine.GO({x: x, y: H, frame: 1, zIndex: 2}), Engine.go, Engine.block, this.edges);
+				}
+
+				for(y = Y-1; y < H+1; y++){
+					if(!Engine.isGo(this.edges,X-1,y))
+						Engine.addGo(new Engine.GO({x: X-1, y: y, frame: 1, zIndex: 2}), Engine.go, Engine.block, this.edges);
+					if(!Engine.isGo(this.edges,W,y))
+						Engine.addGo(new Engine.GO({x: W, y: y, frame: 1, zIndex: 2}), Engine.go, Engine.block, this.edges);	
+				}
 
 				this.rooms[this.rooms.length] = {X: X, Y: Y, W: W, H: H};
 				break;
