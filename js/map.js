@@ -103,6 +103,14 @@ Engine.Map = {
 		}
 	},
 
+	touchstart: function(event) {
+    	var x = event.x - (Engine.camera.x);
+		var y = event.y - (Engine.camera.y);
+		x = Math.floor(x / (Engine.camera.scale * Engine.tileSize + Engine.tileMargin) + 0.5);
+		y = Math.floor(y / (Engine.camera.scale * Engine.tileSize + Engine.tileMargin) + 0.5);
+		Engine.player.player.input(x,y);
+	},
+	
 	keyup: function(event){
 	}
 };
