@@ -6,6 +6,7 @@ Engine.generateMap = function(){
 	Engine.generator.roomSize = Utils.randomZ(8,16);
 	Engine.generator.roomCount = Utils.randomZ(8,32);
 	Engine.generator.maxMazeLength = Utils.randomZ(16,32);
+	Engine.generator.maxDirCount = Utils.randomZ(0,5);
 	Engine.generator.makeRooms();
 
 	Engine.generator.spawnPlayer();
@@ -16,6 +17,8 @@ Engine.generateMap = function(){
 Engine.generator = {
 	maxLoop: 16,
 	uniqueId: 0,
+	dirCount: 0,
+	dirs: [[0,1], [0,-1], [-1,0], [1,0]],
 
 	makeRooms: function(){
 		this.edges = [];
@@ -26,10 +29,55 @@ Engine.generator = {
 			this.makeRoom();
 
 		this.makeMazes();
+		this.makeDoors();
 	},
 
-	makeEdge: function(x, y){
-		Engine.addGo(new Engine.GO({x: x, y: y, frame: 1, /*tileset: app.atlases.ui*/}), Engine.go, Engine.block, this.edges);
+	makeDoors: function(){
+		var _x, _y;
+		for(var i in this.edges){
+			var first = null;
+			for(var d in this.dirs){
+				_x = this.dirs[d][0];
+				_y = this.dirs[d][1];
+				var tile = Engine.isGo(Engine.ground,this.edges[i].x + _x, this.edges[i].y + _y);
+				if(!tile || !tile.id) continue;
+				if(first && first.id != tile.id){
+					
+					var zone = this.zones[tile.id];
+					// console.log(zone);
+					// debugger;
+					for(var t in zone)
+						zone[t].id = first.id;
+
+					this.edges[i].frame = 1;
+					this.edges[i].tileset = app.atlases.ui;
+
+					Engine.addGo(this.edges[i], Engine.ground);
+					Engine.removeGo(this.edges[i], this.edges, Engine.block);
+			 		
+				} 
+				else first = tile;
+			}
+		}
+	},
+
+	makeEdge: function(x, y,id){
+		if(!Engine.isGo(Engine.go, x, y))
+			Engine.addGo(new Engine.GO({x: x, y: y, frame: 1,id: id /*tileset: app.atlases.ui*/}), Engine.go, Engine.block, this.edges);
+	},
+
+	getDir: function(){
+		var dir = null;
+		if(this.dirCount <= 0){
+			dir = this.dirs[Utils.randomZ(0,this.dirs.length-1)];
+			this.lastDir = dir;
+			this.dirCount = this.maxDirCount;
+		}
+		this.dirCount--;
+
+		if(!dir) dir = this.lastDir;
+
+		return dir;
 	},
 
 	makeMaze: function(x, y){
@@ -38,39 +86,37 @@ Engine.generator = {
 		var length = 1;
 
 		this.zones[id] = [];
-
 		Engine.addGo(new Engine.GO({x: x, y: y, id: id}), Engine.go, Engine.ground, this.zones[id]);
 		
 		for(_x = -1; _x <= 1; _x++)
 			for(_y = -1; _y <= 1; _y++)
-				if(!Engine.isGo(Engine.go,x + _x, y + _y )&& (_x != 0 || _y != 0))
-					this.makeEdge(x + _x, y + _y);
+				if(_x != 0 || _y != 0)
+					this.makeEdge(x + _x, y + _y, id);
 
-		var dirs = [[0,1], [0,-1], [-1,0], [1,0]];
-		var _x, _y;
+		var _x, _y;		 
 
 		while(stack.length > 0 && length < this.maxMazeLength){
 			for(var loop = 0; loop < this.maxLoop; loop++){
-				var dir = dirs[Utils.randomZ(0,dirs.length-1)];
+				var dir = this.getDir();
 				var edge = Engine.isGo(this.edges, x + dir[0], y + dir[1]);
-				if(edge){
+				if(edge && edge.id == id){
 					edge.frame = 0;
 					edge.tileset = app.atlases.map;
 
 					Engine.removeGo(edge, this.edges, Engine.block);
 					Engine.addGo(edge, Engine.ground, this.zones[id]);
-			 		stack[stack.length] = [x + dir[0], y + dir[1]];
+			 		stack[stack.length] = [edge.x, edge.y];
+			 		x = edge.x;
+			 		y = edge.y;
 					length ++;
 					break;
 				}
 			}
-			x = stack[stack.length-1][0];
-			y = stack[stack.length-1][1];
 
 			for(_x = -1; _x <= 1; _x++)
 				for(_y = -1; _y <= 1; _y++)
-					if(!Engine.isGo(Engine.go,x + _x, y + _y )&& (_x != 0 || _y != 0))
-						this.makeEdge(x + _x, y + _y);
+					if(_x != 0 || _y != 0)
+						this.makeEdge(x + _x, y + _y, id);
 
 			stack.splice(0,1);
 		}
