@@ -39,6 +39,7 @@ Engine.generator = {
 			var Y = Utils.randomZ(0, this.mapH);
 			var W = X + Utils.randomZ(3, this.roomSize);
 			var H = Y + Utils.randomZ(3, this.roomSize);
+			var x, y;
 
 			if(!this.isOverlap(X,Y,W,H)){
 				var id = ++this.uniqueId;
@@ -46,8 +47,11 @@ Engine.generator = {
 
 				for(var x = X; x < W; x++)
 					for(var y = Y; y < H; y++)
-						this.zones[id][this.zones[id].length] = Engine.addGo(new Engine.GO({x: x, y: y, id: id}),
-						 	Engine.go, Engine.ground);
+						Engine.addGo(new Engine.GO({x: x, y: y, id: id}), Engine.go, Engine.ground, this.zones[id]);
+
+				for(x = X-1; x< W+1; x++)
+					Engine.addGo(new Engine.GO({x: x, y: y, frame: 1, zIndex: 2}), Engine.go, Engine.block, this.edges);
+
 				this.rooms[this.rooms.length] = {X: X, Y: Y, W: W, H: H};
 				break;
 			}
