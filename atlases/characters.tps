@@ -194,6 +194,9 @@
             <filename>characters_3.png</filename>
             <filename>characters_4.png</filename>
             <filename>characters_5.png</filename>
+            <filename>characters_6.png</filename>
+            <filename>characters_7.png</filename>
+            <filename>characters_8.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

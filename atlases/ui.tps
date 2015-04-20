@@ -188,12 +188,18 @@
         </struct>
         <key>fileList</key>
         <array>
-            <filename>ui_0.png</filename>
-            <filename>ui_1.png</filename>
-            <filename>ui_2.png</filename>
-            <filename>ui_3.png</filename>
-            <filename>ui_4.png</filename>
-            <filename>ui_5.png</filename>
+            <filename>ui_00.png</filename>
+            <filename>ui_01.png</filename>
+            <filename>ui_02.png</filename>
+            <filename>ui_03.png</filename>
+            <filename>ui_04.png</filename>
+            <filename>ui_05.png</filename>
+            <filename>ui_06.png</filename>
+            <filename>ui_07.png</filename>
+            <filename>ui_08.png</filename>
+            <filename>ui_09.png</filename>
+            <filename>ui_10.png</filename>
+            <filename>ui_11.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
