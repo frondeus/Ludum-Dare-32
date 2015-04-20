@@ -1,9 +1,9 @@
 Engine.generateMap = function(){
 	Engine.init();
 
-	Engine.generator.mapW = Utils.randomZ(8,16);
-	Engine.generator.mapH = Utils.randomZ(8,16);
-	Engine.generator.roomSize = Utils.randomZ(8,16);
+	Engine.generator.mapW = Utils.randomZ(8,32);
+	Engine.generator.mapH = Utils.randomZ(8,32);
+	Engine.generator.roomSize = Utils.randomZ(8,32);
 	Engine.generator.roomCount = Utils.randomZ(8,32);
 	Engine.generator.maxMazeLength = Utils.randomZ(16,32);
 	Engine.generator.maxDirCount = Utils.randomZ(0,5);
@@ -58,12 +58,9 @@ Engine.generator = {
 						this.zones[first.id][this.zones[first.id].length] = zone[t];
 					}
 					this.zones[first.id][this.zones[first.id].length] = edge;
-					// console.
-					
-			
+
 					edge.id = first.id;
 					edge.frame = 0;
-					// edge.tileset = app.atlases.ui;
 
 					Engine.addGo(edge, Engine.ground);
 					Engine.removeGo(edge, this.edges, Engine.block);
