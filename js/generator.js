@@ -5,18 +5,21 @@ Engine.generateMap= function(){
 	Engine.generator.mapH = Utils.randomZ(8,16);
 	Engine.generator.enemyCount = Utils.randomZ(8,32);
 	Engine.generator.roomCount = Utils.randomZ(8,32);
-	Engine.generator.maxMaze = Utils.randomZ(2,12);
+	Engine.generator.maxMaze = Utils.randomZ(10,32);
+	Engine.generator.itemCount = Utils.randomZ(1,8);
 
 	Engine.generator.makeRooms();
 	Engine.generator.spawnEnemies();
+	Engine.generator.spawnItems();
 	Engine.generator.spawnPlayer();
 
 	Engine.sort();
 };
 
 Engine.generator = {
-	mapW: 16,
-	mapH: 16,
+	mapW: 32,
+	mapH: 32,
+	itemCount: 32,
 	enemyCount: 32,
 	roomCount: 32,
 	maxLoop: 10,
@@ -79,8 +82,8 @@ Engine.generator = {
 	makePassages: function(){
 		var x,y, _x, _y;
 
-		for(x= -this.mapW/2 ; x < this.mapW*1.5; x++)
-			for(y = -this.mapH/2; y < this.mapH*1.5; y++){
+		for(x= Math.floor(-this.mapW/2); x < Math.floor(this.mapW*1.5); x++)
+			for(y = Math.floor(-this.mapH/2); y < Math.floor(this.mapH*1.5); y++){
 				var free = true;
 				for(_x = -1; _x <= 1; _x++)
 					for(_y = -1; _y <= 1; _y++)
@@ -88,16 +91,19 @@ Engine.generator = {
 				if(free)
 					this.makeMaze(x,y);
 			}
-		
-		for(x = -this.mapW; x < this.mapW * 2; x++)
-			for(y = -this.mapH; y < this.mapH * 2; y++)
+		var dir = [[0,1], [0,-1], [1,0], [-1,0]];
+		for(x = -this.mapW * 2; x < this.mapW * 4; x++)
+			for(y = -this.mapH * 2; y < this.mapH * 4; y++)
 			{
 				var XY = Engine.isGo(Engine.ground,x,y);
 				if(!XY){ // wall
 					var first = null;
 					var second = null;
-					for(_x = -1; _x <= 1; _x++)
-						for(_y = -1; _y <= 1; _y++){
+
+					
+						for(var i = 0; i < 4; i++){
+							_x = dir[i][0];
+							_y = dir[i][1];
 							var tile = Engine.isGo(Engine.ground,x + _x,y + _y);
 							if(!tile || tile.id == null) continue;
 
@@ -125,8 +131,8 @@ Engine.generator = {
 		for(var loop = 0; loop < this.maxLoop; loop++){
 			var X = Utils.randomZ(0,this.mapW-1);
 			var Y = Utils.randomZ(0,this.mapH-1);
-			var W = X + Utils.randomZ(2,this.mapW/2);
-			var H = Y + Utils.randomZ(2,this.mapH/2);
+			var W = X + Utils.randomZ(2,Math.floor(this.mapW/2));
+			var H = Y + Utils.randomZ(2,Math.floor(this.mapH/2));
 			
 			if(!this.isOverlap(X,Y,W,H)){
 				var roomid = this.uniqueId++;
@@ -152,16 +158,16 @@ Engine.generator = {
 		return false;
 	},
 
-	isFree: function(x,y){
-		return Engine.isGo(Engine.ground,x,y) && Engine.isGo(Engine.block,x,y) == null;
+	isFree: function(collection, x,y){
+		return Engine.isGo(Engine.ground,x,y) && Engine.isGo(Engine.block,x,y) == null && Engine.isGo(collection,x,y) == null;
 	},
 
 	spawnEnemies: function(){
 		for(var i = 0; i < this.enemyCount; i++){
 			for(var loop = 0; loop < this.maxLoop; loop++) {
-				var x = Utils.randomZ(-this.mapW/2,this.mapW*1.5);
-				var y = Utils.randomZ(-this.mapW/2,this.mapH*1.5);
-				if(this.isFree(x,y))
+				var x = Utils.randomZ(Math.floor(-this.mapW/2),Math.floor(this.mapW*1.5));
+				var y = Utils.randomZ(Math.floor(-this.mapW/2),Math.floor(this.mapH*1.5));
+				if(this.isFree(Engine.enemies,x,y))
 				{
 					Engine.addGo(new Engine.GO({x: x, y: y}),Engine.go, Engine.enemies, Engine.block)
 						.addComponent("enemy", new Engine.Enemy());
@@ -171,22 +177,51 @@ Engine.generator = {
 		}
 	},
 
+	spawnItems: function(){
+		var key = null, door = null;
+		for(var i = 0; i < this.itemCount; i++)
+			for(var loop = 0; loop < this.maxLoop; loop++){
+				var x = Utils.randomZ(Math.floor(-this.mapW/2),Math.floor(this.mapW*1.5));
+				var y = Utils.randomZ(Math.floor(-this.mapW/2),Math.floor(this.mapH*1.5));
+				if(this.isFree(Engine.items,x,y))
+				{
+					if(!key){
+						key = Engine.addGo(new Engine.GO({x: x, y: y}),Engine.go, Engine.items)
+						.addComponent("item", new Engine.Item());
+						
+						key.frame = 2;
+					}
+					else if(!door){
+						door = Engine.addGo(new Engine.GO({x: x, y: y}),Engine.go, Engine.items)
+						.addComponent("item", new Engine.Item());
+						door.frame = 3;
+					}
+					else
+						Engine.addGo(new Engine.GO({x: x, y: y}),Engine.go, Engine.items)
+							.addComponent("item", new Engine.Item());
+					break;
+				}
+			}
+
+		
+	},
+
 	spawnPlayer: function(){
 		for(var loop = 0; loop < this.maxLoop; loop++) {
-			var x = Utils.randomZ(-this.mapW/2,this.mapW*1.5);
-			var y = Utils.randomZ(-this.mapW/2,this.mapH*1.5);
-			if(this.isFree(x,y))
+			var x = Utils.randomZ(Math.floor(-this.mapW/2),(this.mapW*1.5));
+			var y = Utils.randomZ(Math.floor(-this.mapW/2),(this.mapH*1.5));
+			if(this.isFree(Engine.players,x,y))
 			{
-				Engine.player =new Engine.GO({x: x, y: y});
-				Engine.addGo(Engine.player, Engine.go, Engine.block, Engine.players)
-					.addComponent("player", new Engine.Player());
+				if(!Engine.player){
+						Engine.player =new Engine.GO({x: x, y: y});
+						Engine.player.addComponent("player", new Engine.Player());
+					}
+				else{
+					Engine.player.x = x;
+					Engine.player.y = y;
 
-				// for(var _x = -1; _x <= 1; _x++)
-				// 	for(var _y = -1; _y <= 1; _y++)
-				// 	{
-				// 		Engine.addGo(new Engine.GO({x: x + _x, y: y + _y, zIndex: 1, tileset: app.atlases.ui}), Engine.go);
-				// 	}
-
+				}
+				Engine.addGo(Engine.player, Engine.go, Engine.block, Engine.players);
 				break;
 			}
 		}

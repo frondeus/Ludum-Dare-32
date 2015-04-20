@@ -1,5 +1,39 @@
+Engine.NextLevel = {
+	render: function(dt){
+		app.layer.clear("#224");
+
+		app.layer.font("48px Arial")
+			.fillStyle("#fff")
+			.fillText("" + Engine.player.level,app.width/2 - 10,app.height/2);
+	},
+
+	mousedown: function(event){
+		if(event.button == "left")
+			app.setState(Engine.Map);
+
+	}
+};
+
+Engine.GameOver = {
+	render: function(dt){
+		app.layer.clear("#224");
+
+		app.layer.font("48px Arial")
+			.fillStyle("#fff")
+			.fillText("Game Over: " + Engine.player.level,app.width/2 - 150,app.height/2);
+	},
+
+	mousedown: function(event){
+		if(event.button == "left"){
+			Engine.player = null;
+			app.setState(Engine.Map);
+		}
+	}
+};
+
 Engine.Map = {
 	create: function() {
+
 	},
 
 	enter: function() {
@@ -45,6 +79,15 @@ Engine.Map = {
 				.align(0.5)
 				.scale(this.bit[i % 3],this.bit[i % 3])
 				.drawAtlasFrame(app.atlases.ui,3 + i % 3,0,0)
+				.restore();
+		}
+
+		if(Engine.player.key){
+			app.layer
+				.save()
+				.translate(32,64+32)
+				.align(0.5)
+				.drawAtlasFrame(app.atlases.ui,6,0,0)
 				.restore();
 		}
 			

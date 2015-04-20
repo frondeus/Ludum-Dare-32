@@ -13,6 +13,9 @@ Engine.Enemy.prototype = {
 		var player= Engine.isGo(Engine.players,x,y);
 		if(player) {
 			player.lifes--;
+			var sound = app.sound.play("hurt" + Utils.randomZ(1,3));
+			app.sound.setPlaybackRate(sound,Utils.randomR(0.5,2));
+			app.sound.setVolume(sound,Utils.randomR(0.6,1));
 			return true;
 		}
 		var ally = Engine.isGo(Engine.allies, x, y);
@@ -37,6 +40,18 @@ Engine.Enemy.prototype = {
 			app.tween(this.go)
 				.wait(Utils.randomR(0,0.2))
 				.to({x: nextX, y: nextY}, 0.1, "01");
+
+			if(Math.abs(this.go.x - Engine.player.x) < 6 && Math.abs(this.go.y - Engine.player.y) < 6){
+				var sound = app.sound.play("step" + Utils.randomZ(1,3));
+				app.sound.setPlaybackRate(sound,Utils.randomR(0.5,2));
+				app.sound.setVolume(sound,Utils.randomR(0.1,0.5));
+			}
+
+			if(Math.abs(this.go.x - Engine.player.x) < 2 && Math.abs(this.go.y - Engine.player.y) < 2){
+				var sound = app.sound.play("enemy" + Utils.randomZ(1,3));
+				app.sound.setPlaybackRate(sound,Utils.randomR(0.5,2));
+				app.sound.setVolume(sound,Utils.randomR(0.2,1));
+			}
 				break;
 		}
 	}

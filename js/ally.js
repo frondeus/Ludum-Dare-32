@@ -32,6 +32,12 @@ Engine.Ally.prototype = {
 			app.tween(this.go)
 				.wait(Utils.randomR(0,0.2))
 				.to({x: nextX, y: nextY}, 0.1, "01");
+
+			if(Math.abs(this.go.x - Engine.player.x) < 6 && Math.abs(this.go.y - Engine.player.y) < 6){
+				var sound = app.sound.play("step" + Utils.randomZ(1,3));
+				app.sound.setPlaybackRate(sound,Utils.randomR(0.6,2));
+				app.sound.setVolume(sound,Utils.randomR(0.1,0.5));
+			}
 				break;
 		}
 	}

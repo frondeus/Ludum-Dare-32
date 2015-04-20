@@ -4,7 +4,7 @@ Engine = {
 	camera: {
 		x: 100,
 		y: 100,
-		scale: 0.5,
+		scale: 1,
 	},
 
 	// go: [],
@@ -16,6 +16,7 @@ Engine = {
 		this.ground = [];
 		this.block = [];
 		this.allies = [];
+		this.items = [];
 	},
 
 	addGo: function(){
@@ -46,15 +47,9 @@ Engine = {
 		for(var i in this.allies)
 			this.allies[i].ally.turn();
 
-		if(this.enemies.length <= 0){
-			this.generateMap();
-			console.log("You win!");
-		}
-
 		if(this.player.lifes <= 0){
-			this.generateMap();
-			console.log("Game Over!");
-			// app.setState(null);
+			// console.log("Game Over!");
+			app.setState(this.GameOver);
 		}
 	},
 
