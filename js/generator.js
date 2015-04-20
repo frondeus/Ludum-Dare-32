@@ -7,8 +7,13 @@ Engine.generateMap = function(){
 	Engine.generator.roomCount = Utils.randomZ(8,32);
 	Engine.generator.maxMazeLength = Utils.randomZ(16,32);
 	Engine.generator.maxDirCount = Utils.randomZ(0,5);
+	Engine.generator.enemyCount = Utils.randomZ(8,32);
+	Engine.generator.itemCount = Utils.randomZ(1,8);
+
 	Engine.generator.makeRooms();
 
+	Engine.generator.spawnEnemies();
+	Engine.generator.spawnItems();
 	Engine.generator.spawnPlayer();
 
 	Engine.sort();
@@ -35,6 +40,7 @@ Engine.generator = {
 	makeDoors: function(){
 		var _x, _y;
 		for(var i in this.edges){
+			if(!this.edges[i]) continue;
 			var first = null;
 			for(var d in this.dirs){
 				_x = this.dirs[d][0];
@@ -49,8 +55,8 @@ Engine.generator = {
 					for(var t in zone)
 						zone[t].id = first.id;
 
-					this.edges[i].frame = 1;
-					this.edges[i].tileset = app.atlases.ui;
+					this.edges[i].frame = 0;
+					// this.edges[i].tileset = app.atlases.;
 
 					Engine.addGo(this.edges[i], Engine.ground);
 					Engine.removeGo(this.edges[i], this.edges, Engine.block);
@@ -177,6 +183,45 @@ Engine.generator = {
 
 	isFree: function(collection, x, y){
 		return !Engine.isGo(Engine.block,x,y) && !Engine.isGo(collection,x,y);
+	},
+
+	spawnEnemies: function(){
+		for(var i  =0 ; i < this.enemyCount; i++)
+		for(var loop = 0; loop = this.maxLoop; loop++){
+			var ground = Engine.ground[Utils.randomZ(0,Engine.ground.length-1)];
+			if(this.isFree(Engine.enemies, ground.x, ground.y)){
+				Engine.addGo(new Engine.GO({x: ground.x, y: ground.y}),Engine.go, Engine.enemies, Engine.block)
+						.addComponent("enemy", new Engine.Enemy());
+				break;
+			}
+
+		}
+	},
+
+	spawnItems: function(){
+		var key = null, door = null;
+		for(var i  =0 ; i < this.itemCount; i++)
+		for(var loop = 0; loop = this.maxLoop; loop++){
+			var ground = Engine.ground[Utils.randomZ(0,Engine.ground.length-1)];
+			if(this.isFree(Engine.enemies, ground.x, ground.y)){
+				if(!key){
+						key = Engine.addGo(new Engine.GO({x: ground.x, y: ground.y}),Engine.go, Engine.items)
+						.addComponent("item", new Engine.Item());
+						
+						key.frame = 2;
+					}
+				else if(!door){
+					door = Engine.addGo(new Engine.GO({x: ground.x, y: ground.y}),Engine.go, Engine.items)
+					.addComponent("item", new Engine.Item());
+					door.frame = 3;
+				}
+				else
+					Engine.addGo(new Engine.GO({x: ground.x, y: ground.y}),Engine.go, Engine.items)
+						.addComponent("item", new Engine.Item());
+				break;
+			}
+
+		}
 	},
 
 	spawnPlayer: function(){
