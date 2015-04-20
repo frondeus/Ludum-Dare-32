@@ -11,6 +11,10 @@ Engine.NextLevel = {
 		if(event.button == "left")
 			app.setState(Engine.Map);
 
+	},
+
+	keydown: function(event){
+		app.setState(Engine.Map);
 	}
 };
 
@@ -28,6 +32,11 @@ Engine.GameOver = {
 			Engine.player = null;
 			app.setState(Engine.Map);
 		}
+	},
+
+	keydown: function(event){
+		Engine.player = null;
+		app.setState(Engine.Map);
 	}
 };
 
@@ -111,6 +120,27 @@ Engine.Map = {
 		Engine.player.player.input(x,y);
 	},
 	
-	keyup: function(event){
+	keydown: function(event){
+		var x = Engine.player.x, y = Engine.player.y;
+		switch(event.key) {
+			case "a":
+			case "left":
+				x--;
+				break;
+			case "d":
+			case "right":
+				x++;
+				break;
+			case "w":
+			case "up":
+				y--;
+				break;
+			case "s":
+			case "down":
+				y++;
+				break;
+
+		}
+		Engine.player.player.input(x,y);
 	}
 };
