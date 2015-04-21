@@ -1536,6 +1536,20 @@ PLAYGROUND.Keyboard.prototype = {
     34: "pagedown",
     35: "end",
     36: "home",
+    96: "numpad0",
+    97: "numpad1",
+    98: "numpad2",
+    99: "numpad3",
+    100: "numpad4",
+    101: "numpad5",
+    102: "numpad6",
+    103: "numpad7",
+    104: "numpad8",
+    105: "numpad9",
+    106: "asterisk",
+    107: "plus",
+    109: "minus",
+    111: "numpadslash",
     112: "f1",
     113: "f2",
     114: "f3",
@@ -1568,6 +1582,7 @@ PLAYGROUND.Keyboard.prototype = {
   },
 
   keydown: function(e) {
+
     if (e.which >= 48 && e.which <= 90) var keyName = String.fromCharCode(e.which).toLowerCase();
     else var keyName = this.keycodes[e.which];
 

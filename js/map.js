@@ -122,24 +122,44 @@ Engine.Map = {
 	
 	keydown: function(event){
 		var x = Engine.player.x, y = Engine.player.y;
+		
 		switch(event.key) {
 			case "a":
 			case "left":
+			case "numpad4":
 				x--;
 				break;
 			case "d":
 			case "right":
+			case "numpad6":
 				x++;
 				break;
 			case "w":
 			case "up":
+			case "numpad8":
 				y--;
 				break;
 			case "s":
 			case "down":
+			case "numpad2":
 				y++;
 				break;
-
+			case "numpad7":
+				x--;
+				y--;
+				break;
+			case "numpad9":
+				x++;
+				y--;
+				break;
+			case "numpad1":
+				x--;
+				y++;
+				break;
+			case "numpad3":
+				x++;
+				y++;
+				break;
 		}
 		Engine.player.player.input(x,y);
 	}
