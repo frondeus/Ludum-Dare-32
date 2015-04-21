@@ -41,11 +41,18 @@ Engine = {
 		return null;
 	},
 
+	isNear: function(A, B, radius){
+		var dX = A.x - B.x;
+		var dY = A.y - B.y;
+		var l = (dX * dX) + (dY * dY);
+		return l < (radius * radius);
+	},
+
 	turn: function(){
 		for(var i in this.enemies)
-			this.enemies[i].enemy.turn();
+			this.enemies[i].enemy.action();
 		for(var i in this.allies)
-			this.allies[i].ally.turn();
+			this.allies[i].ally.action();
 
 		if(this.player.lifes <= 0){
 			// console.log("Game Over!");

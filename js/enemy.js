@@ -31,28 +31,42 @@ Engine.Enemy.prototype = {
 		return false;
 	},
 
-	turn: function(){
-		var nextX = this.go.x + Utils.randomZ(-1,1);
-		var nextY = this.go.y + Utils.randomZ(-1,1);
-
-		for(var i = 0; i < 4; i++)
-		if(this.canGo(nextX,nextY)){
+	goTo: function(x, y){
+		if(this.canGo(x,y)){
 			app.tween(this.go)
 				.wait(Utils.randomR(0,0.2))
-				.to({x: nextX, y: nextY}, 0.1, "01");
+				.to({x: x, y: y}, 0.1, "01");	
 
-			if(Math.abs(this.go.x - Engine.player.x) < 6 && Math.abs(this.go.y - Engine.player.y) < 6){
+			if(Engine.isNear(this.go ,Engine.player, 6)){
 				var sound = app.sound.play("step" + Utils.randomZ(1,3));
 				app.sound.setPlaybackRate(sound,Utils.randomR(0.5,2));
 				app.sound.setVolume(sound,Utils.randomR(0.1,0.5));
 			}
+			return true;
+		}
+		return false;
+	},
 
-			if(Math.abs(this.go.x - Engine.player.x) < 2 && Math.abs(this.go.y - Engine.player.y) < 2){
-				var sound = app.sound.play("enemy" + Utils.randomZ(1,3));
-				app.sound.setPlaybackRate(sound,Utils.randomR(0.5,2));
-				app.sound.setVolume(sound,Utils.randomR(0.2,1));
-			}
+	action: function(){
+		if(Engine.isNear(this.go ,Engine.player, 4)){
+			var dX = this.go.x - Engine.player.x;
+			var dY = this.go.y - Engine.player.y;
+			dX = Math.min(1,Math.max(-1,dX));
+			dY = Math.min(1,Math.max(-1,dY));
+			this.goTo(this.go.x - dX, this.go.y - dY);
+		}
+		else
+		for(var i = 0; i < 4; i++){
+			var nextX = this.go.x + Utils.randomZ(-1,1);
+			var nextY = this.go.y + Utils.randomZ(-1,1);	
+			if(this.goTo(nextX, nextY))
 				break;
+		}
+
+		if(Engine.isNear(this.go ,Engine.player, 8)){
+			var sound = app.sound.play("enemy" + Utils.randomZ(1,3));
+			app.sound.setPlaybackRate(sound,Utils.randomR(0.5,2));
+			app.sound.setVolume(sound,Utils.randomR(0.2,1));
 		}
 	}
 };

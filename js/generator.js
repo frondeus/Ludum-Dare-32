@@ -1,9 +1,11 @@
 Engine.generateMap = function(){
 	Engine.init();
 
-	Engine.generator.mapW = Utils.randomZ(8,32);
-	Engine.generator.mapH = Utils.randomZ(8,32);
-	Engine.generator.roomSize = Utils.randomZ(8,32);
+	Engine.generator.mapW = Utils.randomZ(8,16);
+	Engine.generator.mapH = Utils.randomZ(8,16);
+	Engine.generator.roomSize = Utils.randomZ(8,16);
+
+
 	Engine.generator.roomCount = Utils.randomZ(8,32);
 	Engine.generator.maxMazeLength = Utils.randomZ(16,32);
 	Engine.generator.maxDirCount = Utils.randomZ(0,5);
@@ -68,9 +70,6 @@ Engine.generator = {
 				} 
 			}
 		}
-
-		for(var i in this.zones)
-				console.log(this.zones[i][0].id);
 	},
 
 	makeEdge: function(x, y,id){
