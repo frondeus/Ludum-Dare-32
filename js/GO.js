@@ -30,8 +30,8 @@ Engine.GO.prototype = {
 
 	render: function(dt){
 		var y = Engine.camera.scale * this.y * (Engine.tileSize + Engine.tileMargin);
-		console.log(y +  " " + this.scale);
-		debugger;
+		// console.log(y +  " " + this.scale);
+		// debugger;
 
 		app.layer.save()
 		
