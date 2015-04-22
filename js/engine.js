@@ -21,8 +21,9 @@ Engine = {
 
 	addGo: function(){
 		var go = arguments[0];
-		for(var i = 1; i < arguments.length; i++)
+		for(var i = 1; i < arguments.length; i++){
 			arguments[i][arguments[i].length] = go;
+		}
 		return go;
 	},
 
