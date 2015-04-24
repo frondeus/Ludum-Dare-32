@@ -10,8 +10,8 @@ Engine.GO = function(args){
 		is: [],
 	},args);
 
-	// app.tween(this).wait(Utils.randomR(0.0,1.5)).to({scale: Engine.camera.scale}, 0.1 , "01").play();
-	this.scale = Engine.camera.scale;
+	app.tween(this).wait(Utils.randomR(0.0,1.5)).to({scale: Engine.camera.scale}, 0.1 , "01").play();
+	// this.scale = Engine.camera.scale;
 };
 
 Engine.GO.prototype = {
