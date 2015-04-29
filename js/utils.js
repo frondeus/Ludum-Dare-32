@@ -1,3 +1,4 @@
+/* global Utils */
 Utils = {
 	extend: function(){
 		for(var i in arguments)

@@ -1,3 +1,4 @@
+/* global app */
 Engine.GO = function(args){
 	Utils.extend(this,{
 		x: 1,

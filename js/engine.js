@@ -1,3 +1,4 @@
+/* global Engine */
 Engine = {
 	tileSize: 32,
 	tileMargin: 0,
